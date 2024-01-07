@@ -1,36 +1,42 @@
-const butInstall = document.getElementById('buttonInstall');
-// Logic for installing the PWA
+// Get the reference to the install button element
+const installButton = document.getElementById('buttonInstall');
 
-// Event handler to the `beforeinstallprompt` event
+// Logic for handling Progressive Web App (PWA) installation
+
+// Event listener for the 'beforeinstallprompt' event
 window.addEventListener('beforeinstallprompt', (event) => {
-
-    // Storing triggered events
+    // Store the 'beforeinstallprompt' event for later use
     window.deferredPrompt = event;
 
-    // Removing hidden class from the button.
-    butInstall.classList.toggle('hidden', false);
+    // Display the install button by removing the 'hidden' class
+    installButton.classList.toggle('hidden', false);
 });
 
-//   Click event handler for butInstall element
-butInstall.addEventListener('click', async () => {
+// Click event listener for the install button
+installButton.addEventListener('click', async () => {
+    // Retrieve the stored 'beforeinstallprompt' event
     const promptEvent = window.deferredPrompt;
-    // If no stored event, exit function
+
+    // If the event is not stored, exit the function
     if (!promptEvent) {
         return;
     }
-    // Show prompt
+
+    // Show the installation prompt
     promptEvent.prompt();
 
-    // Reset the deferred prompt variable, it can only be used once.
+    // Reset the deferredPrompt variable as it can only be used once
     window.deferredPrompt = null;
 
-    butInstall.classList.toggle('hidden', true);
+    // Hide the install button after the installation prompt is shown
+    installButton.classList.toggle('hidden', true);
 });
 
-// Handler for appInstalled event
+// Event listener for the 'appinstalled' event
 window.addEventListener('appinstalled', (event) => {
-    // Clearing prompt
+    // Clear the deferredPrompt property
     window.deferredPrompt = null;
-    // Logging the installation event
-    console.log('PWA has been installed', event);
+
+    // Log information about the PWA installation event
+    console.log('Progressive Web App has been successfully installed', event);
 });
